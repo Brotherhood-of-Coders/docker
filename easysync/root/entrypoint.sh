@@ -14,6 +14,7 @@ settings{
    statusFile = "/var/log/lsyncd/lsyncd.status",
    nodaemon 	= true,
    maxDelays	= 100,
+   insist     = true,
    maxProcesses = 1,
 }
 END
@@ -24,9 +25,11 @@ for host in $(ls -1 ${dir})
 do
   for target in $(ls -1 ${dir}/${host})
   do
-    echo "sync{default.rsyncssh, source=\"${dir}/${host}/${target}\",host=\"${host}\",targetdir=\"${target}\",rsync={_extra={\"-a\"}}}" >> ${config}
+    echo "sync{default.rsync, source=\"${dir}/${host}/${target}\",target=\"${host}:/opt/easysync/${target}\",rsync={archive=true,compress=false,_extra={\"-e\",\"ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null\"}}}" >> ${config}
   done
 done
+
+cat ${config}
 
 echo 'Starting lsyncd...';
 
