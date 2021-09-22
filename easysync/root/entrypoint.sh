@@ -29,8 +29,6 @@ do
   done
 done
 
-cat ${config}
-
 echo 'Starting lsyncd...';
 
 lsyncd /etc/lsyncd.lua
